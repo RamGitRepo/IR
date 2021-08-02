@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>IR CEM-7071</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <style>
+      .container {
+        max-width: 1000px;
+		background-color: beige;
+      }
+       body {
+		background-color: beige;
+      }
+      .form-group {
+        width: 100%;
+      }
+      .txt_box {
+        width: 10%;
+        padding: 0;
+        height: 30px;
+        position: relative;
+        left: 0;
+        outline: none;
+        border: 1px solid #cdcdcd;
+        border-color: rgba(0,0,1,.15);
+        background-color: white;
+        font-size: 16px;
+      }
+      .col-sm-4{
+        width: 200%;            
+      }
+    </style>
+  </head>
+  <body>
+      <div class="container">
+        <div class="row">
+            <div class="col-sm-4"> 
+              <h1>Search Engine For Coventry University Using Pureportal</h1>
+              <form role="form" method='POST' action='/'>
+                <div class="form-group">
+                  <input type="text" name="text_Name" align="center" id="query-box" class="txt_box" placeholder="Enter Search Query..." autofocus required>
+                    <button type="submit" name ="search_query" value = "Searching CU Authors" class="btn btn-default">Search CU Authors</button>
+                    <button type="submit" name ="search_query" value = "Searching Subject Classification" class="btn btn-default">Subject Classification</button>
+                </div>                
+              </form>
+              <br>
+              <br>
+            </div>    
+              {% for error in errors %}
+                <h4>{{ error }}</h4>
+              {% endfor %}
+            </div> 
+			<div class="row">
+            <div class="col-sm-8"> 
+              {% if subject %}
+                <h2>Subject Classification Results</h2>
+                <br>
+                <h4> <B>Input Text:</B>  {{query}} </h4>
+                <h3> <B>Result: </B>{{ subject[0] }} </h3>
+                <h3> <B>Score: </B>{{ subject[1] }} % </h3>
+                
+              {% endif %}  
+              {% if results %}
+                <h2>CU Authors Results</h2>
+                <p> Found <var><b>{{status[0]}}</b></var> documents in <var><b>{{status[1]}}</b></var> seconds for query <B><var>{{query}}</var></B></p>
+                {% if not_found %} <p> No match found for : <var style="color:#FF0000";>{{not_found}}</var></p> {% endif %}
+                <br>
+                <div id="results">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Profile Name</th>
+                        <th>Title Name</th>
+                        <th>Co Authors</th>
+                        <th>Citations</th>
+                        <th>Score</th>
+                      </tr>
+                    </thead>
+                    {% for key, result in results.items()%}
+                      <tr>
+                        <td>{{ result[3]}}</td>  
+                        <td><a href = {{ result[2]}} target="_blank" rel="noopener noreferrer">{{ result[1]}}</a></td>
+                        <td>{{ result[4]}}</td>
+                        <td>{{ result[5]}}</td>
+                        <td>{{ result[0]}}</td>
+                      </tr>
+                    {% endfor %}
+                  </table>
+                </div>
+              {% else %}
+                  {% if virgin_boot %}
+                  <h2>No Matching Search Results</h2>
+                    <p> No match found for : <var style="color:#FF0000";>{{not_found}}</var></p>
+                  {% endif %}
+              {% endif %}
+			  </div>
+            </div>
+      </div>
+    </div>
+    <script src="//code.jquery.com/jquery-2.2.1.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  </body>
+</html>
